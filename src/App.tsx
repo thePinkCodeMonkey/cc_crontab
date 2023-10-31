@@ -4,6 +4,10 @@ import TextField from '@mui/material/TextField';
 import './App.css';
 
 function App() {
+  const [str, setStr] = React.useState<String>("Blah");
+  let updateStr = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setStr(e.target.value)
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -15,8 +19,13 @@ function App() {
           noValidate
           autoComplete="off"
         >
-            <TextField id="outlined-basic" label="cron pattern" variant="outlined" />
+            <TextField 
+              id="outlined-basic" 
+              label="cron pattern" 
+              variant="outlined"
+              onChange={updateStr} />
         </Box>
+        {str} 
       </header>
     </div>
   );
