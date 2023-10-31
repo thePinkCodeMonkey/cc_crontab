@@ -1,23 +1,23 @@
 import React from 'react';
 import logo from './logo.svg';
+import Box from "@mui/material/Box"
+import TextField from '@mui/material/TextField';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Box
+          component="form"
+          sx={{
+            '& > :not(style)': { m: 1, width: '25ch' },
+          }}
+          noValidate
+          autoComplete="off"
         >
-          Learn React
-        </a>
+            <TextField id="outlined-basic" label="cron pattern" variant="outlined" />
+        </Box>
       </header>
     </div>
   );
