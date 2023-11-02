@@ -1,4 +1,3 @@
-import {validateMinute} from "./validator";
 import validateCronInput from "./validator";
 
 //test case: empty space at the end of the string, but 5 comonents -> true
@@ -84,4 +83,20 @@ test("Month component within range", () => {
 test("Month component out of range", () => {
     expect(validateCronInput("* * * 0 *")).toBe(false);
     expect(validateCronInput("* * * 13 *")).toBe(false);
+})
+
+test("Wild card and non numeric input in week", () => {
+    expect(validateCronInput("* * * * *")).toBe(true);
+    expect(validateCronInput("* * * * notANumber")).toBe(false);
+})
+
+test("Week component within range", () => {
+    expect(validateCronInput("1 1 1 1 0")).toBe(true);
+    expect(validateCronInput("1 1 1 6 4")).toBe(true);
+    expect(validateCronInput("1 1 1 12 7")).toBe(true);
+})
+
+test("Week component out of range", () => {
+    expect(validateCronInput("* * * * -1")).toBe(false);
+    expect(validateCronInput("* * * * 8")).toBe(false);
 })

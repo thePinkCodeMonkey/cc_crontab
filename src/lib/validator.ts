@@ -61,7 +61,7 @@ function validateMonth(monthStr: string): boolean {
 }
 
 function validateWeek(weekStr: string): boolean {
-    return(simpleValidation(weekStr,[1,7]));
+    return(simpleValidation(weekStr,[0,7]));
 }
 export default function validateCronInput(str: string): boolean {
 
