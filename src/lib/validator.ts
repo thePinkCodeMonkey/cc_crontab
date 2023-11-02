@@ -2,6 +2,8 @@
 // TODO: Validate ranges, lists, string inputs and such, step values
 // TODO: consider what errors to return
 
+import { isMinusToken } from "typescript";
+
 const VALID_MONTH_STR = [
     "jan",
     "feb",
@@ -27,49 +29,43 @@ const VALID_WEEK_STR = [
     "sun"
 ];
 
+/* 
+    Validates a cron component substring for
+    1. Valid range - true
+    2. Wild card - true
+    3. Non numberic false
+*/
+function simpleValidation(str: string, range: [number, number]): boolean {
+
+    if(str === "*") return true;
+    const numbericValue = parseInt(str);
+    if(isNaN(numbericValue)) return false;
+    return (numbericValue >= range[0] && numbericValue <= range[1] )
+}
+
 export function validateMinute(minStr: string): boolean {
     //NOTE: Valid values are: * - wild card, 0-59
-    let minute = parseInt(minStr);
-    if (minStr === "*") return true;
-    if (isNaN(minute)) return false;
-    if (minute < 0 || minute > 59) return false;
-    return true;
+    return(simpleValidation(minStr,[0,59]));
 }
 
 function validateHour(hourStr: string): boolean {
-    let hour = parseInt(hourStr);
-    if (hourStr === "*") return true;
-    if (isNaN(hour)) return false;
-    if (hour < 0 || hour> 23) return false;
-    return true;
+    return(simpleValidation(hourStr,[0,23]));
 }
 
 function validateDay(dayStr: string): boolean {
-    let day = parseInt(dayStr);
-    if (dayStr === "*") return true;
-    if (isNaN(day)) return false;
-    if (day < 1 || day > 31) return false;
-    return true;
+    return(simpleValidation(dayStr,[1,31]));
 }
 
 function validateMonth(monthStr: string): boolean {
-    let month = parseInt(monthStr);
-    if (monthStr === "*") return true;
-    if (isNaN(month)) return false;
-    if (month < 1 || month > 12) return false;
-    return true;
+    return(simpleValidation(monthStr,[1,12]));
 }
 
 function validateWeek(weekStr: string): boolean {
-    let week = parseInt(weekStr);
-    if (weekStr === "*") return true;
-    if (isNaN(week)) return false;
-    if (week < 1 || week > 7) return false;
-    return true;
+    return(simpleValidation(weekStr,[1,7]));
 }
 export default function validateCronInput(str: string): boolean {
 
-    let [minute, hour, day, month, week, ...others] = str.split(" ");
+    let [minute, hour, day, month, week, ...others] = str.trim().split(" ");
 
     //TODO:  do we just ignore the rest of the inputs?
     if (others.length > 0) {
