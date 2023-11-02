@@ -23,7 +23,7 @@ const VALID_WEEK_STR = [
     "mon",
     "tue",
     "wed",
-    "thur",
+    "thu",
     "fri",
     "sat",
     "sun"
@@ -44,7 +44,6 @@ function simpleValidation(str: string, range: [number, number]): boolean {
 }
 
 export function validateMinute(minStr: string): boolean {
-    //NOTE: Valid values are: * - wild card, 0-59
     return(simpleValidation(minStr,[0,59]));
 }
 
@@ -57,17 +56,27 @@ function validateDay(dayStr: string): boolean {
 }
 
 function validateMonth(monthStr: string): boolean {
+    if(valideMonthStrValue(monthStr)) return true;
     return(simpleValidation(monthStr,[1,12]));
 }
 
 function validateWeek(weekStr: string): boolean {
+    if(valideWeekStrValue(weekStr)) return true;
     return(simpleValidation(weekStr,[0,7]));
 }
+
+function valideMonthStrValue(monthStr: string): boolean {
+    return (VALID_MONTH_STR.includes(monthStr.toLocaleLowerCase()));
+}
+
+function valideWeekStrValue(weekStr: string): boolean {
+    return (VALID_WEEK_STR.includes(weekStr.toLocaleLowerCase()));
+}
+
 export default function validateCronInput(str: string): boolean {
 
     let [minute, hour, day, month, week, ...others] = str.trim().split(" ");
 
-    //TODO:  do we just ignore the rest of the inputs?
     if (others.length > 0) {
         return false;
     }

@@ -85,6 +85,20 @@ test("Month component out of range", () => {
     expect(validateCronInput("* * * 13 *")).toBe(false);
 })
 
+test("Valid month string input", () => {
+    expect(validateCronInput("* * * jan *")).toBe(true);
+    expect(validateCronInput("* * * Feb *")).toBe(true);
+    expect(validateCronInput("* * * Mar *")).toBe(true);
+    expect(validateCronInput("* * * apr *")).toBe(true);
+    expect(validateCronInput("* * * may *")).toBe(true);
+    expect(validateCronInput("* * * JUN *")).toBe(true);
+    expect(validateCronInput("* * * aug *")).toBe(true);
+    expect(validateCronInput("* * * seP *")).toBe(true);
+    expect(validateCronInput("* * * Oct *")).toBe(true);
+    expect(validateCronInput("* * * Nov *")).toBe(true);
+    expect(validateCronInput("* * * dec *")).toBe(true);
+})
+
 test("Wild card and non numeric input in week", () => {
     expect(validateCronInput("* * * * *")).toBe(true);
     expect(validateCronInput("* * * * notANumber")).toBe(false);
@@ -99,4 +113,15 @@ test("Week component within range", () => {
 test("Week component out of range", () => {
     expect(validateCronInput("* * * * -1")).toBe(false);
     expect(validateCronInput("* * * * 8")).toBe(false);
+})
+
+test("Valid week string input", () => {
+    expect(validateCronInput("* * * * mon")).toBe(true);
+    expect(validateCronInput("* * * * MoN")).toBe(true);
+    expect(validateCronInput("* * * * tue")).toBe(true);
+    expect(validateCronInput("* * * * wed")).toBe(true);
+    expect(validateCronInput("* * * * Thu")).toBe(true);
+    expect(validateCronInput("* * * * Fri")).toBe(true);
+    expect(validateCronInput("* * * * sat")).toBe(true);
+    expect(validateCronInput("* * * * sun")).toBe(true);
 })
