@@ -1,7 +1,16 @@
 import validateCronInput from "./validator";
 
-//test case: empty space at the end of the string, but 5 comonents -> true
-//test case: more than 5 inputs
+test("Incomplete inputs", () => {
+    expect(validateCronInput("")).toBe(false);
+    expect(validateCronInput("* ")).toBe(false);
+    expect(validateCronInput("* *")).toBe(false);
+    expect(validateCronInput("* * *")).toBe(false);
+    expect(validateCronInput("* * * *")).toBe(false);
+})
+
+test("numeric range without list", () => {
+    expect(validateCronInput("0-2 1 2 3 4 5")).toBe(false);
+})
 
 test("More than 5 inputs for cron tab should return false", () => {
     expect(validateCronInput("0 1 2 3 4 5")).toBe(false);
