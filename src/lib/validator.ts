@@ -44,6 +44,10 @@ function simpleValidation(str: string, range: [number, number]): boolean {
 }
 
 export function validateMinute(minStr: string): boolean {
+    //TODO: does string contain range
+    if(minStr.match(/\d{1,}-\d{1,}/)) {
+        return validateNumbericRangeStr(minStr);
+    }
     return(simpleValidation(minStr,[0,59]));
 }
 
@@ -56,21 +60,34 @@ function validateDay(dayStr: string): boolean {
 }
 
 function validateMonth(monthStr: string): boolean {
+    if(monthStr == undefined) return false;
     if(valideMonthStrValue(monthStr)) return true;
     return(simpleValidation(monthStr,[1,12]));
 }
 
 function validateWeek(weekStr: string): boolean {
+    if(weekStr == undefined) return false;
     if(valideWeekStrValue(weekStr)) return true;
     return(simpleValidation(weekStr,[0,7]));
 }
 
 function valideMonthStrValue(monthStr: string): boolean {
-    return (VALID_MONTH_STR.includes(monthStr.toLocaleLowerCase()));
+    return (VALID_MONTH_STR.includes(monthStr.toLowerCase()));
 }
 
 function valideWeekStrValue(weekStr: string): boolean {
-    return (VALID_WEEK_STR.includes(weekStr.toLocaleLowerCase()));
+    return (VALID_WEEK_STR.includes(weekStr.toLowerCase()));
+}
+
+//TODO: edge case, range mixing numeric and week/month str
+function validateNumbericRangeStr(rangeStr: string, lowerBound?: number, upperBound?: number): boolean {
+    //input contains a single "-"
+    //split it into two
+    const [lower, upper] = rangeStr.split("-");
+    if (parseInt(upper)- parseInt(lower) < 0) return false;
+    lowerBound = lowerBound || parseInt(lower);
+    upperBound = upperBound || parseInt(upper);
+    return (parseInt(upper) <= upperBound && parseInt(lower) >= lowerBound);
 }
 
 export default function validateCronInput(str: string): boolean {
