@@ -5,6 +5,7 @@ import validateCronInput from "./lib/validator";
 import './App.css';
 
 //TODO: consider capping input at 5?
+//TODO: parse out input and put them in fields below?
 function App() {
   const [str, setStr] = React.useState<String>("Blah");
   const [error, setError] = React.useState<boolean>(false);
