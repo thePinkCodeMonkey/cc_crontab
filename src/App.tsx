@@ -1,9 +1,18 @@
-import React from 'react';
 import Box from "@mui/material/Box"
+import React from 'react';
 import TextField from '@mui/material/TextField';
+import validateCronInput from "./lib/validator";
 import './App.css';
 
+//TODO: consider capping input at 5?
+//TODO: parse out input and put them in fields below?
 function App() {
+  const [str, setStr] = React.useState<String>("Blah");
+  const [error, setError] = React.useState<boolean>(false);
+  let updateStr = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setStr(e.target.value)
+    validateCronInput(e.target.value) ? setError(false) : setError(true)
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -15,8 +24,14 @@ function App() {
           noValidate
           autoComplete="off"
         >
-            <TextField id="outlined-basic" label="cron pattern" variant="outlined" />
+            <TextField
+              error={error}
+              id="outlined-basic" 
+              label="cron pattern" 
+              variant="outlined"
+              onChange={updateStr} />
         </Box>
+        {str} 
       </header>
     </div>
   );
