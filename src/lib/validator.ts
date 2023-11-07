@@ -35,6 +35,22 @@ const VALID_WEEK_STR = [
     2. Wild card - true
     3. Non numberic false
 */
+
+function isWildCard(str: string): boolean {
+    return str === "*";
+}
+/* checks for patter number-number */
+function isNumberRange(str: string): boolean {
+    return(!!str.match(/\d{1,}-\d{1,}/)) 
+
+}
+
+function isMonthRange(str: string): boolean {
+    const [lower, upper] = str.split("-");
+    if (lower === undefined || upper === undefined) return false;
+    //TODO convert month str into number if not a number
+    return false;
+}
 function simpleValidation(str: string, range: [number, number]): boolean {
 
     if(str === "*") return true;
@@ -60,13 +76,13 @@ function validateDay(dayStr: string): boolean {
 }
 
 function validateMonth(monthStr: string): boolean {
-    if(monthStr == undefined) return false;
+    if(monthStr === undefined) return false;
     if(valideMonthStrValue(monthStr)) return true;
     return(simpleValidation(monthStr,[1,12]));
 }
 
 function validateWeek(weekStr: string): boolean {
-    if(weekStr == undefined) return false;
+    if(weekStr === undefined) return false;
     if(valideWeekStrValue(weekStr)) return true;
     return(simpleValidation(weekStr,[0,7]));
 }
