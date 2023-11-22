@@ -60,6 +60,7 @@ function simpleValidation(str: string, range: [number, number]): boolean {
 }
 
 export function validateMinute(minStr: string): boolean {
+    if (minStr == null) return false;
     //if minute string has a range
     if(minStr.includes("-")) {
         let [start, end, ...rest] = minStr.split("-");
@@ -76,6 +77,18 @@ export function validateMinute(minStr: string): boolean {
 }
 
 function validateHour(hourStr: string): boolean {
+    if (hourStr == null) return false;
+    if(hourStr.includes("-")) {
+        let [start, end, ...rest] = hourStr.split("-");
+
+        if (rest.length>0) return false;
+        // start and end should have values and rest should not
+        if (simpleValidation(start, [0,23]) && simpleValidation(end, [0,23])) {
+            //check to see if the range are correct
+            return(parseInt(start) < parseInt(end))
+        }
+        return false;
+    }
     return(simpleValidation(hourStr,[0,23]));
 }
 

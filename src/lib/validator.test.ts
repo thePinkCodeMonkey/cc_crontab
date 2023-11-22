@@ -68,6 +68,18 @@ test("Hour component within range", () => {
     expect(validateCronInput("1 23 3 4 5")).toBe(true);
 })
 
+test("Test valid range input in hour", () => {
+    expect(validateCronInput("1 1-22 3 4 5")).toBe(true);
+    expect(validateCronInput("1 20-22 3 4 5")).toBe(true);
+})
+
+test("Test invalide range input in hour", () => {
+    expect(validateCronInput("1 2-1 3 4")).toBe(false);
+    expect(validateCronInput("1 -12 3 4")).toBe(false);
+    expect(validateCronInput("1 1-2-3 3 4")).toBe(false);
+    expect(validateCronInput("1 1-24 3 4")).toBe(false);
+})
+
 test("Hour component out of range", () => {
     expect(validateCronInput("1 -1 3 4 5")).toBe(false);
     expect(validateCronInput("1 24 3 4 5")).toBe(false);
