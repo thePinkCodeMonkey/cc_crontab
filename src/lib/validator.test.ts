@@ -32,6 +32,17 @@ test("Non numberic input and not wild card in minute cron component", () => {
     expect(validateCronInput("notANumber 1 2 3 4")).toBe(false);
 })
 
+test("Test valid range input in minutes", () => {
+    expect(validateCronInput("1-2 1 2 3 4")).toBe(true);
+})
+
+test("Test invalide range input in minutes", () => {
+    expect(validateCronInput("2-1 1 2 3 4")).toBe(false);
+    expect(validateCronInput("-12 1 2 3 4")).toBe(false);
+    expect(validateCronInput("1-2-3 1 2 3 4")).toBe(false);
+    expect(validateCronInput("1-60 1 2 3 4")).toBe(false);
+})
+
 test("Minute component within range", () => {
     expect(validateCronInput("0 2 3 4 5")).toBe(true);
     expect(validateCronInput("15 2 3 4 5")).toBe(true);

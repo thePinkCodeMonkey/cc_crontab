@@ -60,9 +60,17 @@ function simpleValidation(str: string, range: [number, number]): boolean {
 }
 
 export function validateMinute(minStr: string): boolean {
-    //TODO: does string contain range
-    if(minStr.match(/\d{1,}-\d{1,}/)) {
-        return validateNumbericRangeStr(minStr);
+    //if minute string has a range
+    if(minStr.includes("-")) {
+        let [start, end, ...rest] = minStr.split("-");
+
+        if (rest.length>0) return false;
+        // start and end should have values and rest should not
+        if (simpleValidation(start, [0,59]) && simpleValidation(end, [0,59])) {
+            //check to see if the range are correct
+            return(parseInt(start) < parseInt(end))
+        }
+        return false;
     }
     return(simpleValidation(minStr,[0,59]));
 }
