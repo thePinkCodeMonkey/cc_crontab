@@ -1,4 +1,3 @@
-// TODO: Validate # of inputs - very simple, just 5, separated by space
 // TODO: Validate ranges, lists, string inputs and such, step values
 // TODO: consider what errors to return
 
@@ -38,11 +37,6 @@ const VALID_WEEK_STR = [
 
 function isWildCard(str: string): boolean {
     return str === "*";
-}
-/* checks for patter number-number */
-function isNumberRange(str: string): boolean {
-    return(!!str.match(/\d{1,}-\d{1,}/)) 
-
 }
 
 function isMonthRange(str: string): boolean {
@@ -93,11 +87,41 @@ function validateHour(hourStr: string): boolean {
 }
 
 function validateDay(dayStr: string): boolean {
+    if(dayStr == null) return false;
+    if(dayStr.includes("-")) {
+        let [start, end, ...rest] = dayStr.split("-");
+
+        if (rest.length>0) return false;
+        // start and end should have values and rest should not
+        if (simpleValidation(start, [0,31]) && simpleValidation(end, [0,31])) {
+            //check to see if the range are correct
+            return(parseInt(start) < parseInt(end))
+        }
+        return false;
+    }
     return(simpleValidation(dayStr,[1,31]));
 }
 
 function validateMonth(monthStr: string): boolean {
     if(monthStr === undefined) return false;
+    if(monthStr.includes("-")){
+        let [start, end, ...rest] = monthStr.split("-");
+
+        if (rest.length>0) return false;
+        // convert month string into numbers
+        if(isNaN(parseInt(start))) {
+            start =  (VALID_MONTH_STR.indexOf(start.toLowerCase())+1).toString();
+        }
+        if(isNaN(parseInt(end))) {
+            end =  (VALID_MONTH_STR.indexOf(end.toLowerCase())+1).toString();
+        }
+        // start and end should have values and rest should not
+        if (simpleValidation(start, [1,12]) && simpleValidation(end, [1,12])) {
+            //check to see if the range are correct
+            return(parseInt(start) < parseInt(end))
+        }
+        return false;
+    }
     if(valideMonthStrValue(monthStr)) return true;
     return(simpleValidation(monthStr,[1,12]));
 }

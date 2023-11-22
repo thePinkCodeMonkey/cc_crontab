@@ -101,6 +101,18 @@ test("Day component out of range", () => {
     expect(validateCronInput("* * 32 * *")).toBe(false);
 })
 
+test("Test valid range input in day", () => {
+    expect(validateCronInput("1 2 1-31 4 5")).toBe(true);
+    expect(validateCronInput("1 2 30-31 4 5")).toBe(true);
+})
+
+test("Test invalide range input in day", () => {
+    expect(validateCronInput("1 2 2-1 4 5")).toBe(false);
+    expect(validateCronInput("1 2 -12 4 5")).toBe(false);
+    expect(validateCronInput("1 2 1-2-3 4 5")).toBe(false);
+    expect(validateCronInput("1 2 1-32 4 5")).toBe(false);
+})
+
 test("Wild card and non numeric input in month", () => {
     expect(validateCronInput("* * * * *")).toBe(true);
     expect(validateCronInput("* * * notANumber *")).toBe(false);
@@ -129,6 +141,43 @@ test("Valid month string input", () => {
     expect(validateCronInput("* * * Oct *")).toBe(true);
     expect(validateCronInput("* * * Nov *")).toBe(true);
     expect(validateCronInput("* * * dec *")).toBe(true);
+})
+
+test("Valid numeric range in month input", ()=>{
+    expect(validateCronInput("* * * 1-2 *")).toBe(true);
+    expect(validateCronInput("* * * 1-12 *")).toBe(true);
+})
+
+test("Valid string range in month input", ()=>{
+    expect(validateCronInput("* * * Jan-Feb *")).toBe(true);
+    expect(validateCronInput("* * * Jan-Dec *")).toBe(true);
+})
+
+test("Valid mixed range in month input", ()=>{
+    expect(validateCronInput("* * * Jan-2 *")).toBe(true);
+    expect(validateCronInput("* * * 1-Dec *")).toBe(true);
+})
+
+test("Invalid numeric range in month input", ()=>{
+    expect(validateCronInput("* * * 2-2 *")).toBe(false);
+    expect(validateCronInput("* * * 5-2 *")).toBe(false);
+    expect(validateCronInput("* * * 0-12 *")).toBe(false);
+    expect(validateCronInput("* * * 1-13 *")).toBe(false);
+    expect(validateCronInput("* * * -12 *")).toBe(false);
+    expect(validateCronInput("* * * 1-2-12 *")).toBe(false);
+})
+
+test("Invalid string range in month input", ()=>{
+    expect(validateCronInput("* * * Feb-feb *")).toBe(false);
+    expect(validateCronInput("* * * May-Feb *")).toBe(false);
+    expect(validateCronInput("* * * -Feb *")).toBe(false);
+    expect(validateCronInput("* * * jan-feb-dec *")).toBe(false);
+})
+
+test("Invalid mixed range in month input", ()=>{
+    expect(validateCronInput("* * * 2-feb *")).toBe(false);
+    expect(validateCronInput("* * * May-2 *")).toBe(false);
+    expect(validateCronInput("* * * jan-2-dec *")).toBe(false);
 })
 
 test("Wild card and non numeric input in week", () => {
