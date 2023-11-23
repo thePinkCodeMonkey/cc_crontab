@@ -19,21 +19,14 @@ const VALID_MONTH_STR = [
 ];
 
 const VALID_WEEK_STR = [
+    "sun",
     "mon",
     "tue",
     "wed",
     "thu",
     "fri",
-    "sat",
-    "sun"
+    "sat"
 ];
-
-/* 
-    Validates a cron component substring for
-    1. Valid range - true
-    2. Wild card - true
-    3. Non numberic false
-*/
 
 function isWildCard(str: string): boolean {
     return str === "*";
@@ -109,6 +102,7 @@ function validateMonth(monthStr: string): boolean {
 
         if (rest.length>0) return false;
         // convert month string into numbers
+        // FIXME:  converting back and forth between integer for Month string is undesirable
         if(isNaN(parseInt(start))) {
             start =  (VALID_MONTH_STR.indexOf(start.toLowerCase())+1).toString();
         }
@@ -128,6 +122,25 @@ function validateMonth(monthStr: string): boolean {
 
 function validateWeek(weekStr: string): boolean {
     if(weekStr === undefined) return false;
+    if(weekStr.includes("-")) {
+        let [start, end, ...rest] = weekStr.split("-");
+
+        if (rest.length>0) return false;
+        // convert week string into numbers
+        // FIXME:  converting back and forth between integer for week is undesirable
+        if(isNaN(parseInt(start))) {
+            start =  (VALID_WEEK_STR.indexOf(start.toLowerCase())).toString();
+        }
+        if(isNaN(parseInt(end))) {
+            end =  (VALID_WEEK_STR.indexOf(end.toLowerCase())).toString();
+        }
+        // start and end should have values and rest should not
+        if (simpleValidation(start, [0,6]) && simpleValidation(end, [0,6])) {
+            //check to see if the range are correct
+            return(parseInt(start) < parseInt(end))
+        }
+        return false;
+    }
     if(valideWeekStrValue(weekStr)) return true;
     return(simpleValidation(weekStr,[0,7]));
 }
@@ -138,17 +151,6 @@ function valideMonthStrValue(monthStr: string): boolean {
 
 function valideWeekStrValue(weekStr: string): boolean {
     return (VALID_WEEK_STR.includes(weekStr.toLowerCase()));
-}
-
-//TODO: edge case, range mixing numeric and week/month str
-function validateNumbericRangeStr(rangeStr: string, lowerBound?: number, upperBound?: number): boolean {
-    //input contains a single "-"
-    //split it into two
-    const [lower, upper] = rangeStr.split("-");
-    if (parseInt(upper)- parseInt(lower) < 0) return false;
-    lowerBound = lowerBound || parseInt(lower);
-    upperBound = upperBound || parseInt(upper);
-    return (parseInt(upper) <= upperBound && parseInt(lower) >= lowerBound);
 }
 
 export default function validateCronInput(str: string): boolean {

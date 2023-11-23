@@ -206,3 +206,26 @@ test("Valid week string input", () => {
     expect(validateCronInput("* * * * sat")).toBe(true);
     expect(validateCronInput("* * * * sun")).toBe(true);
 })
+
+test("Valid numeric range in week input", ()=>{
+    expect(validateCronInput("* * * * 0-6")).toBe(true);
+    expect(validateCronInput("* * * * 4-5")).toBe(true);
+})
+
+test("Valid string range in week input", ()=>{
+    expect(validateCronInput("* * * * SUN-SAT")).toBe(true);
+    expect(validateCronInput("* * * * mon-fri")).toBe(true);
+})
+
+test("Valid mixed range in week input", ()=>{
+    expect(validateCronInput("* * * * sun-6")).toBe(true);
+    expect(validateCronInput("* * * * 1-FRI")).toBe(true);
+})
+
+test("Invalid numeric range in week input", ()=>{
+    expect(validateCronInput("* * * * 1-0")).toBe(false);
+    expect(validateCronInput("* * * * 0-7")).toBe(false);
+    expect(validateCronInput("* * * * -1")).toBe(false);
+    expect(validateCronInput("* * * * 1-")).toBe(false);
+    expect(validateCronInput("* * * * 1-2-3")).toBe(false);
+})
